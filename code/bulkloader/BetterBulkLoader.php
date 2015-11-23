@@ -161,15 +161,16 @@ class BetterBulkLoader extends BulkLoader {
 	 * Import the given record
 	 */
 	protected function processRecord($record, $columnMap, &$results, $preview = false) {
+		$rowNumber = $results->currentIndex + (method_exists($this->source, 'getHasHeader') && $this->source->getHasHeader() ? 2 : 1);
 		if(!is_array($record) || empty($record) || !array_filter($record)){
-			$results->addSkipped("Empty/invalid record data.", $results->currentIndex);
+			$results->addSkipped("Empty/invalid record data.", $results->currentIndex, $rowNumber);
 			return;
 		}
 		//map incoming record according to the standardisation mapping (columnMap)
 		$record = $this->columnMapRecord($record);
 		//skip if required data is not present
 		if(!$this->hasRequiredData($record)){
-			$results->addSkipped("Required data is missing.", $results->currentIndex);
+			$results->addSkipped("Required data is missing.", $results->currentIndex,$rowNumber);
 			return;
 		}
 		$modelClass = $this->objectClass;
@@ -220,7 +221,7 @@ class BetterBulkLoader extends BulkLoader {
 				$arrErrors = $oValidator->getErrors();
 				if ($arrErrors) {
 					//TODO: at the moment $arrErrors is array of numbers
-					$results->addSkipped(print_r($arrErrors, true), $results->currentIndex);
+					$results->addSkipped(print_r($arrErrors, true), $results->currentIndex, $rowNumber);
 					$bSkip = true;
 				}
 
@@ -240,14 +241,14 @@ class BetterBulkLoader extends BulkLoader {
 					if ($changed) {
 						$results->addUpdated($obj);
 					} else {
-						$results->addSkipped("No data was changed.", $results->currentIndex);
+						$results->addSkipped("No data was changed.", $results->currentIndex, $rowNumber);
 					}
 				} else {
 					$results->addCreated($obj);
 				}
 			}
 		}catch(ValidationException $e) {
-			$results->addSkipped($e->getMessage(), $results->currentIndex);
+			$results->addSkipped($e->getMessage(), $results->currentIndex, $rowNumber);
 		}
 
 		$objID = $obj->ID;

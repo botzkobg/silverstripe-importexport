@@ -21,10 +21,11 @@ class BetterBulkLoader_Result extends BulkLoader_Result {
 	/**
 	 * @param string $message Reason for skipping
 	 */
-	public function addSkipped($message = null, $index = 'unknown') {
+	public function addSkipped($message = null, $index = 'unknown', $row = 'unknown') {
 		$this->skipped[] = array(
-			'Message' => $message,
-			'Index'	=> $index,
+			'Message'	=> $message,
+			'Index'		=> $index,
+			'Row'		=> $row,
 		);
 	}
 
@@ -63,7 +64,7 @@ class BetterBulkLoader_Result extends BulkLoader_Result {
 			 * TODO: move to own method
 			 */
 			foreach($this->skipped as $skipped) {
-				$output['skipped'] .= " {$skipped['Index']}: " . print_r($skipped['Message']) . "<br>";
+				$output['skipped'] .= "Index: {$skipped['Index']} Row: {$skipped['Row']} Message: " . print_r($skipped['Message'], true) . "\n";
 			}
 		}
 

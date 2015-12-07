@@ -87,6 +87,7 @@ class GridFieldImporter_Request extends RequestHandler {
 		);
 		//don't return buttons at all
 		unset($body['buttons']);
+
 		//re-encode
 		$response = new SS_HTTPResponse(Convert::raw2json(array($body)));
 		

@@ -67,7 +67,9 @@ class GridFieldImporter_Request extends RequestHandler {
 	 * @return UploadField UploadField instance as defined in the component
 	 */
 	public function getUploadField() {
-		return $this->component->getUploadField($this->gridField);
+		$field = $this->component->getUploadField($this->gridField);
+		$this->extend('updateUploadField', $field);
+		return $field;
 	}
 
 	/**
@@ -117,6 +119,7 @@ class GridFieldImporter_Request extends RequestHandler {
 			new LiteralField('mapperfield', $mapper->forTemplate())
 		);
 		$form->setFormAction($this->Link('import').'/'.$file->ID);
+		$this->extend('updatePreviewForm', $form, $file);
 		$content = ArrayData::create(array(
 			'File' => $file,
 			'MapperForm'=> $form
@@ -170,6 +173,7 @@ class GridFieldImporter_Request extends RequestHandler {
 	 * @param  SS_HTTPRequest $request
 	 */
 	public function import(SS_HTTPRequest $request) {
+		die("Direct import");
 		$hasheader = (bool)$request->postVar('HasHeader');
 		$cleardata = $this->component->getCanClearData() ?
 						 (bool)$request->postVar('ClearData') :
@@ -249,7 +253,7 @@ class GridFieldImporter_Request extends RequestHandler {
 	 * @see GridFieldDetailForm_ItemRequest::getTopLevelController
 	 * @return Controller
 	 */
-	protected function getToplevelController() {
+	public function getToplevelController() {
 		$c = $this->requestHandler;
 		while($c && $c instanceof GridFieldDetailForm_ItemRequest) {
 			$c = $c->getController();

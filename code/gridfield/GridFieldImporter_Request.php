@@ -173,7 +173,6 @@ class GridFieldImporter_Request extends RequestHandler {
 	 * @param  SS_HTTPRequest $request
 	 */
 	public function import(SS_HTTPRequest $request) {
-		die("Direct import");
 		$hasheader = (bool)$request->postVar('HasHeader');
 		$cleardata = $this->component->getCanClearData() ?
 						 (bool)$request->postVar('ClearData') :

@@ -20,6 +20,8 @@
                     url: url,
                     type: 'GET',
                     success: function(data, status, xhr) {
+                        $('.gridfield-queued-export__loading').remove();
+                        
                         if (!$.contains(document, self[0])) return;
                         $('.cms-container').handleAjaxResponse(data, status, xhr);
                     }

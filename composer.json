@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "3.1.x",
+        "silverstripe/framework": "3.2.x",
         "goodby/csv": "1.2.x"
     },
      "extra": {

@@ -153,7 +153,7 @@ class BetterBulkLoader extends BulkLoader {
 			$results->currentIndex = $index;
 			$this->processRecord($record, $this->columnMap, $results, $preview);
 		}
-		
+
 		return $results;
 	}
 

@@ -70,7 +70,7 @@ class GridFieldImporter implements GridField_HTMLProvider, GridField_URLHandler 
 	 * @param boolean $canclear
 	 */
 	public function setCanClearData($canclear = true) {
-		$this->canClearData = $canClearData;
+		$this->canClearData = $canclear;
 	}
 
 	/**
